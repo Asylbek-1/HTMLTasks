@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конвертация</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: nowrap;
+        }
+        input, select {
+            padding: 8px;
+            width: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .results input {
+            background-color: #f9f9f9;
+            border: none;
+            font-weight: bold;
+            width: 100px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<label>Введите сумму:</label>
+<input type="number" id="amount" placeholder="Сумма">
+<select id="currency">
+    <option value="KZT">KZT</option>
+    <option value="USD">USD</option>
+    <option value="EUR">EUR</option>
+</select>
+<div class="results">
+    <label>KZT:</label>
+    <input type="text" id="resultKZT" placeholder="-" readonly>
+    <label>USD:</label>
+    <input type="text" id="resultUSD" placeholder="-" readonly>
+    <label>EUR:</label>
+    <input type="text" id="resultEUR" placeholder="-" readonly>
+</div>
+<script>
+    const exchangeRates = {
+        KZT: { USD: 1 / 429, EUR: 1 / 400, KZT: 1 },
+        USD: { KZT: 431, EUR: 0.85, USD: 1 },
+        EUR: { KZT: 500, USD: 1.18, EUR: 1 }
+    };
+    document.getElementById('currency').addEventListener('change', convertCurrency);
+    document.getElementById('amount').addEventListener('input', convertCurrency);
+    function convertCurrency() {
+        const amount = parseFloat(document.getElementById('amount').value) || 0;
+        const selectedCurrency = document.getElementById('currency').value;
+        const resultKZT = amount * exchangeRates[selectedCurrency].KZT;
+        const resultUSD = amount * exchangeRates[selectedCurrency].USD;
+        const resultEUR = amount * exchangeRates[selectedCurrency].EUR;
+        document.getElementById('resultKZT').value = resultKZT.toFixed(2);
+        document.getElementById('resultUSD').value = resultUSD.toFixed(2);
+        document.getElementById('resultEUR').value = resultEUR.toFixed(2);
+    }
+</script>
+</body>
+</html>
